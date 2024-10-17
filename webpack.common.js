@@ -4,7 +4,7 @@ import { dirname, resolve as _resolve } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-export default {
+const commonConfig = {
   entry: './src/index.ts',
   target: 'node',
   module: {
@@ -20,13 +20,13 @@ export default {
     extensions: ['.ts', '.js'],
   },
   output: {
-    filename: 'bundle.js',
     path: _resolve(__dirname, 'dist'),
-    libraryTarget: 'module',
-    chunkFormat: 'commonjs',
+    filename: 'bundle.js',
+    libraryTarget: 'commonjs2',
   },
   experiments: {
     outputModule: true,
   },
-  mode: 'production',
 };
+
+export default commonConfig;
