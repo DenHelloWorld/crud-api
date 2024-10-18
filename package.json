@@ -8,14 +8,15 @@
     "build:dev": "webpack --config webpack.dev.js",
     "start:dev": "webpack serve --config webpack.dev.js",
     "start:prod": "webpack serve --config webpack.prod.js",
-    "start": "node --loader ts-node/esm src/index.ts",
-    "start:multi": "node --loader ts-node/esm src/index.ts --mult"
+    "start": "node --no-warnings=ExperimentalWarning --loader ts-node/esm src/index.ts",
+    "start:multi": "node --no-warnings=ExperimentalWarning --loader ts-node/esm src/index.ts --multi"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/node": "^22.7.6",
     "@types/uuid": "^10.0.0",
     "dotenv": "^16.4.5",
     "nodemon": "^3.1.7",
