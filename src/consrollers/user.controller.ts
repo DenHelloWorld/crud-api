@@ -1,11 +1,7 @@
 import { IncomingMessage, ServerResponse } from 'node:http';
 import userDb from '../services/user.service.ts';
 
-export const getUsers = async (req: IncomingMessage, res: ServerResponse) => {
-  //   let counter = 0;
-  //   for (let i = 0; i < 20_000_000_000; i++) {
-  //     counter++;
-  //   }
+export const getUsers = async (_req: IncomingMessage, res: ServerResponse) => {
   const users = await userDb.getAllUsers();
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json');
