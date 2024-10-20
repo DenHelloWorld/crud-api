@@ -8,8 +8,8 @@
     "build:dev": "webpack --config webpack.dev.js",
     "start:dev": "webpack serve --config webpack.dev.js",
     "start:prod": "webpack serve --config webpack.prod.js",
-    "start": "node --no-warnings=ExperimentalWarning --loader ts-node/esm src/dbServer.ts",
-    "start:multi": "node --no-warnings=ExperimentalWarning --loader ts-node/esm src/index.ts --multi"
+    "start": "node --no-warnings=ExperimentalWarning --loader ts-node/esm src/balancer.ts",
+    "start:multi": "node --no-warnings=ExperimentalWarning --loader ts-node/esm src/balancer.ts --multi"
   },
   "keywords": [],
   "author": "",

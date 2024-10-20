@@ -2,13 +2,17 @@ import { createServer, IncomingMessage, ServerResponse } from 'node:http';
 import { parse } from 'node:url';
 import { userRoutes } from './routes/user.routes.ts';
 
-const DB_PORT = Number(process.env.DB_PORT) || 3999;
+export const DB_PORT = Number(process.env.DB_PORT) || 3500;
 
-const app = createServer((req: IncomingMessage, res: ServerResponse) => {
-  const parsedUrl = parse(req.url || '', true);
-  userRoutes(req, res, parsedUrl);
-});
+const launchDb = async (port: number) => {
+  const app = createServer((req: IncomingMessage, res: ServerResponse) => {
+    const parsedUrl = parse(req.url || '', true);
+    userRoutes(req, res, parsedUrl);
+  });
 
-app.listen(DB_PORT, () => {
-  console.log(`DB Server ${process.pid} is listening on port ${DB_PORT}`);
-});
+  app.listen(port, () => {
+    console.log(`DB Server ${process.pid} is listening on port ${port}`);
+  });
+};
+
+export default launchDb;
