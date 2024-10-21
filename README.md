@@ -67,7 +67,7 @@ User Routes
  - PUT /api/users/:userId - Update an existing user by ID
  - DELETE /api/users/:userId - Delete a user by ID
 
-Response Codes
+## Response Codes
 
  - 200 OK - Successful operation
  - 201 Created - User successfully created
