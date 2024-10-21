@@ -1,6 +1,7 @@
 import { IncomingMessage, ServerResponse } from 'node:http';
 import { v4 as uuidv4, validate as validateUuid } from 'uuid';
 import userDb from '../services/user.service';
+import { User } from '../models/user.model';
 
 export const getUsers = async (_req: IncomingMessage, res: ServerResponse) => {
   const users = await userDb.getAllUsers();
@@ -41,7 +42,7 @@ export const createUser = async (req: IncomingMessage, res: ServerResponse) => {
     }
 
     try {
-      const parsedBody = JSON.parse(body);
+      const parsedBody: User = JSON.parse(body);
 
       const { username, age, hobbies } = parsedBody;
 
@@ -57,10 +58,10 @@ export const createUser = async (req: IncomingMessage, res: ServerResponse) => {
         res.end(JSON.stringify({ message: 'Invalid data: age is required and must be a non-negative number' }));
         return;
       }
-      if (!Array.isArray(hobbies)) {
+      if (!Array.isArray(hobbies) || !hobbies.every(item => typeof item === 'string')) {
         res.statusCode = 400;
         res.setHeader('Content-Type', 'application/json');
-        res.end(JSON.stringify({ message: 'Invalid data: hobbies are required and must be an array' }));
+        res.end(JSON.stringify({ message: 'Invalid data: hobbies are required and must be an array of strings' }));
         return;
       }
 
