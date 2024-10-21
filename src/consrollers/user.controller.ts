@@ -8,7 +8,7 @@ export const getUsers = async (_req: IncomingMessage, res: ServerResponse) => {
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify(users));
 };
-export const getUserById = async (req: IncomingMessage, res: ServerResponse, userId: string) => {
+export const getUserById = async (_req: IncomingMessage, res: ServerResponse, userId: string) => {
   if (!validateUuid(userId)) {
     res.statusCode = 400;
     res.setHeader('Content-Type', 'application/json');
@@ -151,13 +151,23 @@ export const updateUser = async (req: IncomingMessage, res: ServerResponse, user
     }
   });
 };
-export const deleteUser = async (req: IncomingMessage, res: ServerResponse, userId: string) => {
+export const deleteUser = async (_req: IncomingMessage, res: ServerResponse, userId: string) => {
+  if (!validateUuid(userId)) {
+    res.statusCode = 400;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ message: 'Invalid userId format' }));
+    return;
+  }
+
   const isDeleted = await userDb.deleteUser(userId);
+
   if (!isDeleted) {
     res.statusCode = 404;
+    res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify({ message: 'User not found' }));
     return;
   }
+
   res.statusCode = 204;
   res.end();
 };
