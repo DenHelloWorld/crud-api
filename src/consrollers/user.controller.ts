@@ -35,25 +35,51 @@ export const createUser = async (req: IncomingMessage, res: ServerResponse) => {
   req.on('end', async () => {
     if (!body) {
       res.statusCode = 400;
+      res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify({ message: 'No data provided' }));
       return;
     }
 
     try {
-      const { username, age, hobbies } = JSON.parse(body);
-      if (!username || !age || !Array.isArray(hobbies)) {
+      const parsedBody = JSON.parse(body);
+
+      const { username, age, hobbies } = parsedBody;
+
+      if (typeof username !== 'string' || !username.trim()) {
         res.statusCode = 400;
-        res.end(JSON.stringify({ message: 'Invalid data' }));
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify({ message: 'Invalid data: username is required and must be a non-empty string' }));
+        return;
+      }
+      if (typeof age !== 'number' || age < 0) {
+        res.statusCode = 400;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify({ message: 'Invalid data: age is required and must be a non-negative number' }));
+        return;
+      }
+      if (!Array.isArray(hobbies)) {
+        res.statusCode = 400;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify({ message: 'Invalid data: hobbies are required and must be an array' }));
         return;
       }
 
       const newUser = await userDb.createUser(username, age, hobbies);
+
       res.statusCode = 201;
+      res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify(newUser));
     } catch (error) {
-      console.error('Error processing request:', error);
-      res.statusCode = 500;
-      res.end(JSON.stringify({ message: 'Internal server error' }));
+      if (error instanceof SyntaxError) {
+        res.statusCode = 400;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify({ message: 'Invalid JSON format' }));
+      } else {
+        console.error('Error processing request:', error);
+        res.statusCode = 500;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify({ message: 'Internal server error' }));
+      }
     }
   });
 };
