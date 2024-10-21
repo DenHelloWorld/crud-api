@@ -1,4 +1,5 @@
 import { IncomingMessage, ServerResponse } from 'node:http';
+import { validate as validateUuid } from 'uuid';
 import userDb from '../services/user.service';
 
 export const getUsers = async (_req: IncomingMessage, res: ServerResponse) => {
@@ -8,6 +9,12 @@ export const getUsers = async (_req: IncomingMessage, res: ServerResponse) => {
   res.end(JSON.stringify(users));
 };
 export const getUserById = async (req: IncomingMessage, res: ServerResponse, userId: string) => {
+  if (!validateUuid(userId)) {
+    res.statusCode = 400;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ message: 'Invalid user ID format' }));
+    return;
+  }
   const user = await userDb.getUserById(userId);
   if (!user) {
     res.statusCode = 404;
