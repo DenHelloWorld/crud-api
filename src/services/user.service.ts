@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { User } from '../models/user.model.ts';
+import { User } from '../models/user.model';
 
 class UserService {
   private usersData: User[] = [

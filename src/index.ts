@@ -1,7 +1,7 @@
+
 import { createServer, IncomingMessage, ServerResponse } from 'node:http';
 import { parse } from 'node:url';
-import { userRoutes } from './routes/user.routes.ts';
-
+import { userRoutes } from './routes/user.routes';
 
 const PORT = Number(process.env.PORT) || 4000;
 

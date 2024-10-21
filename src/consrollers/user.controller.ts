@@ -1,5 +1,5 @@
 import { IncomingMessage, ServerResponse } from 'node:http';
-import userDb from '../services/user.service.ts';
+import userDb from '../services/user.service';
 
 export const getUsers = async (_req: IncomingMessage, res: ServerResponse) => {
   const users = await userDb.getAllUsers();

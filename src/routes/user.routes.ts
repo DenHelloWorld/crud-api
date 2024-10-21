@@ -1,6 +1,6 @@
 import { IncomingMessage, ServerResponse } from 'node:http';
 import { UrlWithParsedQuery } from 'node:url';
-import { getUsers, getUserById, createUser, updateUser, deleteUser } from '../consrollers/user.controller.ts';
+import { getUsers, getUserById, createUser, updateUser, deleteUser } from '../consrollers/user.controller';
 
 export const userRoutes = (req: IncomingMessage, res: ServerResponse, parsedUrl: UrlWithParsedQuery) => {
   const { pathname } = parsedUrl;
