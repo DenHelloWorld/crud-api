@@ -1,12 +1,20 @@
+import { resolve } from 'node:path';
 import { fileURLToPath } from 'url';
-import { dirname, resolve as _resolve } from 'path';
+import { dirname } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-export default {
+const config = {
+  mode: 'production',
   entry: './src/index.ts',
-  target: 'node',
+  output: {
+    filename: 'bundle.cjs',
+    path: resolve(__dirname, 'dist'),
+  },
+  resolve: {
+    extensions: ['.ts', '.js'],
+  },
   module: {
     rules: [
       {
@@ -16,17 +24,12 @@ export default {
       },
     ],
   },
-  resolve: {
-    extensions: ['.ts', '.js'],
+  target: 'node',
+  devServer: {
+    static: './dist/bundle.сjs',
+    port: 3000,
+    hot: true,
   },
-  output: {
-    filename: 'bundle.js',
-    path: _resolve(__dirname, 'dist'),
-    libraryTarget: 'module',
-    chunkFormat: 'commonjs',
-  },
-  experiments: {
-    outputModule: true,
-  },
-  mode: 'production',
 };
+
+export default config;

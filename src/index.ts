@@ -1,10 +1,19 @@
-import { createServer } from 'http';
+import { createServer, IncomingMessage, ServerResponse } from 'node:http';
+import { parse } from 'node:url';
+import { userRoutes } from './routes/user.routes';
+import { config } from 'dotenv';
 
-const server = createServer((_, res) => {
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
-  res.end('Hello, Node.js with TypeScript and Webpack!');
+config();
+
+const PORT = Number(process.env.PORT) || 4000;
+
+export const app = createServer((req: IncomingMessage, res: ServerResponse) => {
+  const parsedUrl = parse(req.url || '', true);
+  userRoutes(req, res, parsedUrl);
 });
 
-server.listen(3000, () => {
-  console.log('Server running at http://localhost:3000/');
-});
+if (PORT && process.env.MODE !== 'test') {
+  app.listen(PORT, () => {
+    console.log(`Server ${process.pid} is listening on port ${PORT}`);
+  });
+}
